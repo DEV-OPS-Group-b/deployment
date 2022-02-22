@@ -17,7 +17,7 @@ services:
 
   react:
     container_name: react-frontend
-    image: fadidasus/react-mini-twit-frontend
+    image: rurusachi/react-mini-twit-frontend
     ports:
       - "3000:3000"
     restart: always
