@@ -30,7 +30,7 @@ services:
 
   spring:
     container_name: spring-backend
-    image: fadidasus/spring-mini-twit-backend
+    image: rurusachi/mini-twit-backend
     ports:
       - "8080:8080"
     restart: always
