@@ -4,6 +4,8 @@ services:
     image: fadidasus/go-mini-twit-simulator
     ports:
       - "9000:9000"
+    environment:
+      - BACKEND=spring
     depends_on:
       - mongo
       - spring
@@ -19,7 +21,7 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    mem_limit: 250M
+    mem_limit: 1000M
     depends_on:
       - spring
       - mongo
