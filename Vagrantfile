@@ -22,6 +22,6 @@ Vagrant.configure('2') do |config|
 
 
   config.vm.provision :docker
-  config.vm.provision :shell, path: "bootstrap.sh"
+  config.vm.provision :shell, path: "bootstrap.sh", run: "always"
   config.vm.provision :docker_compose, yml: "/deployment/docker-compose.yml", compose_version: "v2.2.3", rebuild: true, run: "always"
 end
