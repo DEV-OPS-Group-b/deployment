@@ -11,7 +11,7 @@ services:
       - spring
       - react
     restart: always
-    mem_limit: 500M
+    mem_limit: 1000M
     networks:
       - isolated-network
 
@@ -21,7 +21,7 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    mem_limit: 1000M
+    mem_limit: 250M
     depends_on:
       - spring
       - mongo
@@ -34,7 +34,7 @@ services:
     ports:
       - "8080:8080"
     restart: always
-    mem_limit: 500M
+    mem_limit: 1000M
     networks:
       - isolated-network
     depends_on:
@@ -44,6 +44,7 @@ services:
     image: mongo
     ports:
       - '27017:27017'
+    mem_limit: 1000M
     networks:
       - isolated-network
 
