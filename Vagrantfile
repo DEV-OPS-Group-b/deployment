@@ -1,7 +1,7 @@
 Vagrant.configure('2') do |config|
   config.vm.box = 'azure'
 
-  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+  config.vm.synced_folder ".", "/vagrant", type: "rsync", disabled: true
 
   # use local ssh key to connect to remote vagrant box
   config.ssh.private_key_path = '~/.ssh/id_rsa'
@@ -22,6 +22,8 @@ Vagrant.configure('2') do |config|
 
 
   config.vm.provision :docker
+  config.vm.provision :file, source:".secrets/azure_rsa.pub", destination:"~/.ssh/azure_rsa.pub"
+  config.vm.provision :shell, inline: "cat ~vagrant/.ssh/azure_rsa.pub >> ~vagrant/.ssh/authorized_keys"
   config.vm.provision :shell, path: "bootstrap.sh", run: "always"
   config.vm.provision :docker_compose, yml: "/deployment/docker-compose.yml", compose_version: "v2.2.3", rebuild: true, run: "always"
 end
