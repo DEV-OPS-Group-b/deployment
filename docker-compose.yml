@@ -1,3 +1,4 @@
+version: '2'
 services:
   go:
     container_name: go-simulator
@@ -12,7 +13,6 @@ services:
     mem_limit: 500M
     networks:
       - isolated-network
-
   react:
     container_name: react-frontend
     image: fadidasus/react-mini-twit-frontend
@@ -25,7 +25,6 @@ services:
       - mongo
     networks:
       - isolated-network
-
   spring:
     container_name: spring-backend
     image: fadidasus/spring-mini-twit-backend
@@ -37,14 +36,12 @@ services:
       - isolated-network
     depends_on:
       - mongo
-
   mongo:
     image: mongo
     ports:
       - '27017:27017'
     networks:
       - isolated-network
-
 networks:
   isolated-network:
     driver: bridge
