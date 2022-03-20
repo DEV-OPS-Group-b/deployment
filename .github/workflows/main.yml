@@ -1,0 +1,30 @@
+name: Release Creation
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    # get part of the tag after the `v`
+    - name: Extract tag version number
+      id: get_version
+      uses: battila7/get-version-action@v2
+
+    # Create a release for this specific version
+    - name: Update Release with Files
+      id: create_version_release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true # Set this to false if you want to prevent updating existing releases
+        name: ${{ github.event.release.name }}
+        draft: ${{ github.event.release.unpublished }}
+        prerelease: ${{ github.event.release.prerelease }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: './docker-compose.yml'
+        tag: ${{ github.event.release.tag_name }}
+        body: ${{ github.event.release.body }}
