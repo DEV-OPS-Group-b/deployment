@@ -45,6 +45,8 @@ services:
     mem_limit: 1000M
     networks:
       - isolated-network
+    volumes: 
+      - /mongodata:/data/db
 networks:
   isolated-network:
     driver: bridge
