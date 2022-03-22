@@ -28,3 +28,11 @@ jobs:
         artifacts: './docker-compose.yml'
         tag: ${{ github.event.release.tag_name }}
         body: ${{ github.event.release.body }}
+
+  docker-compose:
+    needs: build
+    uses: DEV-OPS-Group-b/deployment/.github/workflows/docker-compose.yml@main
+    secrets:
+      HOST: ${{ secrets.VM_HOST }}
+      USERNAME: ${{ secrets.VM_USERNAME }}
+      KEY: ${{ secrets.VM_KEY }}
