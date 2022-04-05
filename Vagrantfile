@@ -14,7 +14,7 @@ Vagrant.configure('2') do |config|
     azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
     azure.location = "germanywestcentral"
     azure.vm_size = "Standard_B2s"
-    azure.resource_group_name = "devops-minitwit"
+    azure.resource_group_name = "devops-minitwit-S"
     azure.vm_name = "minitwitb"
     azure.dns_name = "minitwitb"
     azure.tcp_endpoints = [3000, 9000, 8080]
