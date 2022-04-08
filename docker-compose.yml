@@ -47,6 +47,26 @@ services:
       - isolated-network
     volumes: 
       - /mongodata:/data/db
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - isolated-network
+    depends_on:
+      - spring
+  grafana:
+    image: grafana/grafana:4.5.2
+    ports:
+      - "3001:3001"
+    networks:
+      - isolated-network
+    depends_on:
+      - spring
+      - prometheus
 networks:
   isolated-network:
     driver: bridge
