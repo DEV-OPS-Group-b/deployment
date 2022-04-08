@@ -17,7 +17,7 @@ Vagrant.configure('2') do |config|
     azure.resource_group_name = "devops-minitwit-S"
     azure.vm_name = "minitwitb"
     azure.dns_name = "minitwitb"
-    azure.tcp_endpoints = [3000, 9000, 8080]
+    azure.tcp_endpoints = [3000, 9000, 8080, 3001, 9090]
   end
 
 
