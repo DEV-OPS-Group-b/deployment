@@ -34,20 +34,7 @@ K8s provides a rest API that facilitates the interaction with the cluster, once 
     \label{fig:k8scluster}
 \end{figure}
 \\\\
-Deployment workflow can be seen in Figure \ref{fig:deploymentWorkflow} and involves the following steps
-\begin{enumerate}
-    \item Developing the app
-    \item Create an image
-    \item Store it in an image registry
-    \item Create the k8s manifest
-    \item Post is to the API server
-\end{enumerate} 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width = .6\textwidth]{deploymentWorkflow.png}
-    \caption{Deployment workflow \cite{https://kubernetes.io/KubernetesKubernetes}}
-    \label{fig:deploymentWorkflow}
-\end{figure}
+
 
 MiniTwit infrastructure design: for the MiniTwit AKS setup, the design included two different setups. The first one is a Landing zone infrastructure which is the stateful part of the project, since it contains 1- cosmos database instance running as a service, 2- key vault to store sensitive data like connection string and active client id that allows the pipeline to push images to the CR, 3- container registry for storing docker images. The second one is the AKS cluster itself: the idea is to be able to destroy the entire cluster and rebuild it in no time, since the cluster is a stateless by design, if anything bad happen, security wise for example a malware is installed somewhere in the services, or any other misconfiguration that might happens due to development error, then by running the pipeline we should be able recover to the initial state desired and saved in the pipeline. 
 

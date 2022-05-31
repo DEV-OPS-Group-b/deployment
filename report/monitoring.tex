@@ -1,5 +1,5 @@
 For the MiniTwit project we have only monitored the backend spring service because it's the heart and the brain to our system. Since the service is hosted in Azure, we have used Azure monitoring features to integrate our service directly with application insight. The configuration requires an AI agent, see “\url{infrastructure-aks/backend/k8s/src/main/resource/AI-Agent.xml}” to be installed and packages within the backend jar file and attached to the service at the class load level. Moreover, we have exposed a set of telemetry to be exposed from spring contest to public. The telemetries we have exposed include health check and information about the service state: up/down, livenessState and readinessState, memory consumption state exposed using the metric probes and service info provided by default in spring-boot-cloud.
-\\\\
+\newpage
 By integrating with application insight in Azure, we have configured a test health check to send a post request to the health, livenessState and readinessState endpoints exposed from the service and monitor response time the availability state for the service. See Figure \ref{fig:availability} 
 \begin{figure}[h]
     \centering

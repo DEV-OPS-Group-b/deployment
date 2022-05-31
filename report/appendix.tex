@@ -1,4 +1,4 @@
-\section{Github repositories}
+\section{GitHub repositories}
 \begin{itemize}
     \item Mini-twit-web-app: \url{https://github.com/DEV-OPS-Group-b/new-mini-twit-web-app}
     \item Mini-twit-simulator-api: \url{https://github.com/DEV-OPS-Group-b/mini-twit-simulator-api}
@@ -12,16 +12,22 @@
 \subsection{Docker}
 Docker is a software development platform and virtualization technology that makes it easy the development and deployment of systems inside of  a virtual containerized environments. As we work in a team docker helps us avoid any problem with compatibility issues, making the system simple, quick development, easy to maintain and deploy.
 
+\subsection{Go}
+For the simulator API we decided to program in Go which is another popular programming language. It's stable and offers good mechanisms for concurrent and parallel developments. We chose Go mostly for the learning process as we find it interesting to explore different tools and technologies in the system. It's also pretty light-weight, which suits the rather simple API.
+
+\subsection{GitHub Actions}
+GitHub Actions is a tool provided by GitHub for creating a CI/CD pipeline, it helps us automate the process of building, testing and merge of the changes in the code. In our case helps us build a strong pipeline that updates docker images and assist the deployment process as well.
+
 \subsection{Prometheus and Grafana}
 Prometheus and Grafana are both powerful tools used for monitoring systems data, it helps to understand the behavior of the systems for better decisions process.
 
 \section{Pipelines}\label{sec:Pipelines}
-\subsection{Github Actions Pipeline}\label{subsec: GithubActionsPipeline}
-The pipeline uses Github Actions to trigger workflows when code is pushed to our repositories, and Docker Hub to store our Docker images.
+\subsection{GitHub Actions Pipeline}\label{subsec: GithubActionsPipeline}
+The pipeline uses GitHub Actions to trigger workflows when code is pushed to our repositories, and Docker Hub to store our Docker images.
 
-There is a Github workflow named docker-publish in the backend, frontend, and simulator repositories.
+There is a GitHub workflow named docker-publish in the backend, frontend, and simulator repositories.
 There are small differences between them when building the Docker images.
-Secrets such as docker login credentials are stored in Github Secrets, and are only available as environment variables to the workflows in our repositories.
+Secrets such as docker login credentials are stored in GitHub Secrets, and are only available as environment variables to the workflows in our repositories.
 
 The docker-publish workflow is triggered by a push and the main flow is the following:
 \begin{enumerate}
@@ -48,7 +54,7 @@ KEY is the ssh key
 \end{enumerate}
 
 \subsection{Pipelines for AKS clusters}\label{subsec:Pipelines:AKSCluster}
-we have two pipeline flows, namely, GitHub action and bitbucket pipeline.\\
+we have two pipeline flows, namely, GitHub action and Bitbucket pipeline.\\
 Bitbucket is a commercial platform, however, it has the possibility of free usage up to 3 users, which was enough for experimenting with it.
 \\\\
 In the bitbucket pipeline the following repository were hosted, including the pipelines:

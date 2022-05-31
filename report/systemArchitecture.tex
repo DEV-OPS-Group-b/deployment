@@ -12,7 +12,7 @@ The upper layer is where the controllers live and manage client requests. The bu
 The layers are connected using the dependency injection container to ensure that the code is loosely coupled, and all the dependencies are loaded to each component during the initialization phase of the server. Exception handling and other configuration, e.g., thread pool management and database configuration context load are handled using aspect-oriented programming and proxy pattern which clean the code from all the boilerplates try-catch blocks and NPE.
 \newpage
 \subsubsection{Simplified 3+1 architecture}
-For this project, we will look at a simplified 3+1 architecture, in this regard we will look at the module viewpoint with a package diagram of the backend as well as an allocation viewpoint via a deployment diagram.\\
+For this project, use a simplified 3+1 architecture, in this regard we looked at the module viewpoint with a package diagram of the backend as well as an allocation viewpoint via a deployment diagram.\\
 The concern of a module viewpoint is to look at how the functionality of the code is organized. For this we refer back to Figure \ref{fig:threelayerArch} which shows a package diagram where the packages are separated into different layers to account for the three layered architecture of our system.\\
 For the allocation viewpoint, a simple deployment diagram was created - this diagram shows how all three elements within the system are connected to the same VM, the element backend is then connected to the database. See Figure \ref{fig:deploymentDiagram}
 \begin{figure}[h]
