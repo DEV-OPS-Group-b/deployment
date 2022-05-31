@@ -1,0 +1,39 @@
+name: Compile LaTeX report
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-latex:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      # Compile LaTeX
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          working_directory: report
+          root_file: main.tex
+      
+       # Runs a set of commands using the runners shell
+      - name: Move report and push
+        run: |
+          mv report/main.pdf report/build/report.pdf,
+          git config user.name github-actions,
+          git config user.email github-actions@github.com,
+          git add report/build/report.pdf,
+          git commit -m "Compiled report"
+          git push
