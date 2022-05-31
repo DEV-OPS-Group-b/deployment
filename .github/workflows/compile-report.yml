@@ -31,9 +31,10 @@ jobs:
        # Runs a set of commands using the runners shell
       - name: Move report and push
         run: |
-          mv report/main.pdf report/build/report.pdf,
-          git config user.name github-actions,
-          git config user.email github-actions@github.com,
-          git add report/build/report.pdf,
+          mkdir report/build
+          mv report/main.pdf report/build/
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add report/build/main.pdf
           git commit -m "Compiled report"
           git push
