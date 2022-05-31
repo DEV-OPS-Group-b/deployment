@@ -31,7 +31,7 @@ jobs:
        # Runs a set of commands using the runners shell
       - name: Move report and push
         run: |
-          mkdir report/build
+          mkdir -p report/build
           mv report/main.pdf report/build/
           git config user.name github-actions
           git config user.email github-actions@github.com
