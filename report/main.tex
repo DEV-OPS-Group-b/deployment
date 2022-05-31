@@ -1,0 +1,131 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[colorinlistoftodos,prependcaption,textsize=footnotesize]{todonotes}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{filecontents}
+\usepackage{verbatim}
+\usepackage{eurosym}
+\usepackage[export]{adjustbox}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{chngcntr}
+\usepackage[labelfont=bf]{caption}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage[titletoc,title]{appendix}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[bottom]{footmisc}
+\usepackage{pifont}
+\usepackage[acronym,nonumberlist]{glossaries}
+\usepackage{amsmath}
+\graphicspath{ {./images/} }
+
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+\usepackage{xurl}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{}
+\fancyhead[R]{\includegraphics[width=3cm]{ITU_logo_CPH_UK.jpg}}
+\rfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\setlength{\headheight}{15.61pt}
+
+\counterwithin{figure}{section}
+\numberwithin{equation}{section}
+
+
+\begin{document}
+
+%---------------------- TITLEPAGE ----------------------%
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+
+\center
+
+\textsc{\LARGE IT-University of Copenhagen}\\[1.5cm] 
+\textsc{\Large DevOps, Software Evolution and Software Maintenance}\\[0.5cm]
+
+\HRule \\[0.2cm]
+{ \huge \bfseries  Final Report}\\
+\HRule \\[1.5cm]
+ 
+\begin{minipage}{0.6\textwidth}
+\begin{flushleft} \large
+\emph{Authors:} \\ \medskip
+Diyana Vladislavova Boyadzhieva\\
+Fadi Atia Dasus\\
+Lucas Schütt Nielsen\\
+Sara Holst Winther\\
+Vivian Luisa Machindano Seerup
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.3\textwidth}
+\begin{flushright} \large
+
+\end{flushright}
+\end{minipage}\\[1.5cm]
+
+
+Masters in Computer Science \\
+{\large \today}\\[4.5cm] 
+
+\includegraphics[width=250px, keepaspectratio]{ITU_logo_UK.jpg}\\[1cm] 
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\section{System's Perspective}
+\subsection{Design of Mini-Twit Application}
+\input{systemDesign}
+\subsection{Architecture of Mini-Twit Application}
+\input{systemArchitecture}
+\subsection{Dependencies in Mini-Twit Application}
+\input{Dependencies}
+\subsection{Interactions in subsystems}
+\input{subsystemInteractions}
+\subsection{The current state of the system}
+\input{currentState}
+\subsection{The license of the project}
+\input{license}
+
+\section{Process' Perspective}
+\subsection{Team Organization}
+\input{teamOrganization}
+
+\subsection{CI/CD chains}
+\input{CICDChain}
+\subsection{Monitoring}
+\input{monitoring}
+\subsection{Logging}
+\input{Logging}
+\subsection{Security}
+\input{Security}
+\subsection{Scaling and load balancing}
+\input{loadBalancing}
+
+\appendix
+%TC:ignore
+\input{appendix}
+%TC:endignore
+\bibliographystyle{unsrt}
+\addcontentsline{toc}{section}{References}
+\bibliography{references}
+\end{document}

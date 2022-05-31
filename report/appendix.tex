@@ -1,0 +1,89 @@
+\section{Github repositories}
+\begin{itemize}
+    \item Mini-twit-web-app: \url{https://github.com/DEV-OPS-Group-b/new-mini-twit-web-app}
+    \item Mini-twit-simulator-api: \url{https://github.com/DEV-OPS-Group-b/mini-twit-simulator-api}
+    \item Mini-twit-backend: \url{https://github.com/DEV-OPS-Group-b/mini-twit-backend}
+    \item Infrastructure-aks: \url{https://github.com/DEV-OPS-Group-b/infrastructure-aks}
+    \item Deployment: \url{https://github.com/DEV-OPS-Group-b/deployment}
+    \item Vagrant: \url{https://github.com/DEV-OPS-Group-b/vagrant}
+\end{itemize}
+
+\section{Dependencies}\label{sec:dependencies}
+\subsection{Docker}
+Docker is a software development platform and virtualization technology that makes it easy the development and deployment of systems inside of  a virtual containerized environments. As we work in a team docker helps us avoid any problem with compatibility issues, making the system simple, quick development, easy to maintain and deploy.
+
+\subsection{Prometheus and Grafana}
+Prometheus and Grafana are both powerful tools used for monitoring systems data, it helps to understand the behavior of the systems for better decisions process.
+
+\section{Pipelines}\label{sec:Pipelines}
+\subsection{Github Actions Pipeline}\label{subsec: GithubActionsPipeline}
+The pipeline uses Github Actions to trigger workflows when code is pushed to our repositories, and Docker Hub to store our Docker images.
+
+There is a Github workflow named docker-publish in the backend, frontend, and simulator repositories.
+There are small differences between them when building the Docker images.
+Secrets such as docker login credentials are stored in Github Secrets, and are only available as environment variables to the workflows in our repositories.
+
+The docker-publish workflow is triggered by a push and the main flow is the following:
+\begin{enumerate}
+\item Get the newest version of the repository
+\item Login to Docker Hub
+\item Prepare metadata for building the Docker image
+\item Build the Docker image and push it to Docker Hub
+\item If the previous steps succeed: call the workflow in our deployment repository called docker-compose
+\end{enumerate}
+
+
+The docker-compose workflow is triggered when called by another workflow:
+It takes 3 parameters HOST, USERNAME, and KEY
+HOST is the address of our server
+USERNAME is the user on the server setup by vagrant
+KEY is the ssh key
+\begin{enumerate}
+\item Get the newest version of the repository
+\item Ssh into the server with the provided credentials and address. The following is run on the server:
+\item Download the newest docker-compose file from our deployment repository
+\item Get the newest version of all docker images used in the docker-compose file
+\item Stop, update, and then restart any containers that have a newer version
+\item Delete unused docker images
+\end{enumerate}
+
+\subsection{Pipelines for AKS clusters}\label{subsec:Pipelines:AKSCluster}
+we have two pipeline flows, namely, GitHub action and bitbucket pipeline.\\
+Bitbucket is a commercial platform, however, it has the possibility of free usage up to 3 users, which was enough for experimenting with it.
+\\\\
+In the bitbucket pipeline the following repository were hosted, including the pipelines:
+\begin{enumerate}
+    \item A copy of existing services, e.g., spring backend API, React frontend web application
+    \item Two repositories to manage creating and destroying the infrastructure, AKS in particular.
+\end{enumerate}
+For the backend service, the pipeline file can be found in “\url{infrastructure-aks/pipelines,bitbucket/backend}”, the pipeline build runs on top of a maven JDK slim image as a base image sine the application runs Java. Moreover, it relies on two services to be available during the build, viz, mongo and docker.
+\\
+The pipeline has two steps.
+\begin{enumerate}
+    \item Build and test step: in this step, maven will package the application and run through all the tests available in the project to ensure nothing is falling for each deployment finally, if all tests pass, a jar file will be created and placed in the root directory. Using spring the testing process is also controlled by a plugin “Jacoco” to manage that each feature is covered by a test ratio and aggregation test coverage ratio under which the pipeline will fail when maven runs the verification process before generating the jar file. Running the tests includes interacting with a testing database running in the pipeline, here where mongo service is used, and using spring profiler the application will pick a connection string for a local mongo instance that runs in the pipeline. To differentiate between the production database and the testing one, spring profiler will pick the connection string from a repository variable stored in bitbucket according to the active profiler configured inside spring application.property file.
+    \item Dockerize step: in this step the pipeline will create and publish the Docker image to a container registry hosted in Azure. To do so, the pipeline uses repository variables to authenticate a predefined client id in Azure and tag the image with the commit number and push it to Azure CR. The image will be created based on a docker file described as a layer docker file, the file can be found at “infrastructure-aks/backend-k8s/dockerfile”. The idea behind the layer docker file is to produce small images “180 MB” max, and that is achieved by using a cached layer for building the image, so for instance, the dependency part is less likely to be changed compared to the actual code, hence by caching layers and transforming them forward into the next layer in the docker build, only the top layer, which in this case will be the actual code modification, will be rebuild. Thus, faster building process. 
+\end{enumerate}
+
+Note: the pipeline is missing an important step in which the newly created image, after pushing to the CR, must be included in the YAML deployment manifest, and sent to the Kubernetes cluster to be scheduled in a pod. This step requires a predefined service principle on the active directory level that is allowed to interact with the cluster from the pipeline. Unfortunately, in the student subscription provided by Azure, we do not have access to the active directory configuration to add this user, and as a consequence, every new push to the CR will require a manual trigger from the cluster to pull the new image and start the rolling update deployment and replace old pods with the new ones.
+
+\subsection{The infrastructure pipelines}\label{subsec:infraStructure}
+\begin{enumerate}
+    \item 1	Creating Azure Landing Zone Infrastructure: This pipeline is used to create the infrastructure needed for the Data tier layer in our Kubernetes setup “Azure calls it the Landing Zone area”. Source:” \url{infrastructure-aks/minitweet-landing-zone/build\_pipeline.yml}” and for the separated resource bicep files see sub-folders in “\url{infrastructure-aks/minitweet-landing-zone/}”\\
+    The pipeline consists of 4 steps using
+    \begin{itemize}
+        \item Creating the resource group, under which all other resources will be manages, and rather than including all the boilerplate code in one big yaml file, we have separated each resource in as a bicep file and reference them in the pipeline as variables.
+        \item Creating the container registry, to store images pushed from the services pipelines
+        \item Creating a cosmosDB instance as a service managed by Azure, to store our data
+        \item Creating keyvault to store sensitive information 
+    \end{itemize}
+    There is a reverse build/ destroy pipeline to clean up the resources when needed, source “\url{infrastructure-aks/minitweet-landing-zone/destroy\_pipeline.yml}”
+    \item Creating MiniTwit AKS infrastructure “stateless zone”: the same concept as above, however, this pipeline is designed to create different type of resources in Azure, and it consists of 5 tasks
+    \begin{itemize}
+        \item creating the resource group in Azure to contain the sub-resources
+        \item creating a static service connection IP address, which will be the public IP for the cluster
+        \item creating a storage account, needed for issuing commands with Azure CLI towards the cluster
+        \item creating a virtual network inside which the cluster will operate 
+        \item create the AKS cluster
+    \end{itemize}
+    There is a reverse build/ destroy pipeline to clean up the resources when needed, source “\url{infrastructure-aks/mini-tweet-testing/destroy\_pipeline.yml}”
+\end{enumerate}
